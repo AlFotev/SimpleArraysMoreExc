@@ -1,0 +1,211 @@
+using System;
+using System.Linq;
+
+namespace ArraysMoreExercises
+{
+    public class ThirdProblem
+    {
+        public static void Main()
+        {
+
+            //            •	call { number / name} -> print “calling { name / number}…”
+            //o If the sum of the digits(ignore other characters) of the number is odd, print “no answer”.
+            //o If the sum of the digits(ignore other characters) of the number is even, print “call ended. 
+            //duration: { duration}”. The duration is calculated from the sum of the digits in the format “mm: ss”
+            //•	message { number / name} -> print “sending sms to { name / number}...”
+            //o   if the difference of the digits (ignore other characters) of the number is odd, print “busy”
+            //o   if the difference of the digits (ignore other characters) of the number is even, print “meet me there”
+
+            var phoneNumbers = Console.ReadLine().Split(' ');
+            var people = Console.ReadLine().Split(' ');
+            var currentInput = new string[2];
+            var indexOfPerson = -1;
+            var indexOfNumber = -1;
+            int sumOfDigits = 0;
+
+            for (int i = 0; i <= phoneNumbers.Length; i++)
+            {
+                currentInput = Console.ReadLine().Split(' ');
+                var firsInputComand = currentInput[0];
+
+                indexOfPerson = Array.IndexOf(people, firsInputComand);
+                indexOfNumber = Array.IndexOf(phoneNumbers, firsInputComand);
+
+                if (firsInputComand != "done" && firsInputComand != "Done" && firsInputComand != "DONE" && firsInputComand != "call" && firsInputComand != "message")
+                {
+
+                    if (indexOfPerson > -1)
+                    {
+                        indexOfPerson = Array.IndexOf(people, firsInputComand);
+                        Console.WriteLine(firsInputComand + " -> " + phoneNumbers[indexOfPerson]);
+                        i--;
+                    }
+                    else if (indexOfNumber > -1)
+                    {
+                        indexOfNumber = Array.IndexOf(phoneNumbers, firsInputComand);
+                        Console.WriteLine(people[indexOfNumber] + " -> " + firsInputComand);
+                        i--;
+                    }
+
+                }
+                else if (currentInput.Length > 1)
+                {
+                    var secondInputComand = currentInput[1];
+                    sumOfDigits = ConvertNumToSum(people, phoneNumbers, secondInputComand);
+                    indexOfPerson = Array.IndexOf(people, secondInputComand);
+                    indexOfNumber = Array.IndexOf(phoneNumbers, secondInputComand);
+
+                    if (firsInputComand == "call")
+                    {
+                        if (indexOfNumber > -1)
+                        {
+                            i--;
+                            if (sumOfDigits % 2 != 0)
+                            {
+                                Console.WriteLine("calling" + " " + people[indexOfNumber] + "..." + "\r\n" + "no answer");
+
+                            }
+                            else
+                            {
+                                double seconds = sumOfDigits % 60;
+                                double minutes = sumOfDigits / 60;
+                                Console.WriteLine($"calling {people[indexOfNumber]}...\r\ncall ended. duration: {minutes.ToString("0#")}:{seconds.ToString("0#")}");
+                            }
+
+                        }
+                        else if (indexOfPerson > -1)
+                        {
+                            i--;
+                            if (sumOfDigits % 2 != 0)
+                            {
+                                Console.WriteLine("calling" + " " + phoneNumbers[indexOfPerson] + "..." + "\r\n" + "no answer");
+
+                            }
+                            else
+                            {
+                                double seconds = sumOfDigits % 60;
+                                double minutes = sumOfDigits / 60;                                
+                                Console.WriteLine($"calling {phoneNumbers[indexOfPerson]}...\r\ncall ended. duration: {minutes.ToString("0#")}:{seconds.ToString("0#")}");
+                            }
+
+                        }
+                    }
+                    ////////////////////
+
+                    if (firsInputComand == "message")
+                    {
+                        var difOfDigits = ConvertNumToDif(people, phoneNumbers, secondInputComand);
+                        if (indexOfNumber > -1)
+                        {
+                            i--;
+                            if (difOfDigits % 2 != 0)
+                            {
+                                Console.WriteLine("sending sms to " + people[indexOfNumber] + "..." + "\r\n" + "busy");
+
+                            }
+                            else
+                            {
+                               
+                                Console.WriteLine("sending sms to " + people[indexOfNumber] + "..." + "\r\n" + "meet me there");
+                            }
+
+                        }
+                        else if (indexOfPerson > -1)
+                        {
+                            i--;
+                            if (difOfDigits % 2 != 0)
+                            {
+                                Console.WriteLine("sending sms to "+ phoneNumbers[indexOfPerson] + "..." + "\r\n" + "busy");
+
+                            }
+                            else
+                            {
+                               
+                                Console.WriteLine("sending sms to " + phoneNumbers[indexOfPerson] + "..." + "\r\n" + "meet me there");
+                            }
+
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+
+        //function for finding the sum of digits
+        public static int ConvertNumToSum(string[] people, string[] phoneNumbers, string secondInputComand)
+        {
+
+                    var indexOfPerson = Array.IndexOf(people, secondInputComand);
+                    var indexOfNumber = Array.IndexOf(phoneNumbers, secondInputComand);
+                    var sumOfDigits = 0;
+                    var number = "";
+
+                    if (indexOfPerson != -1)
+                    {
+
+                        number = phoneNumbers[indexOfPerson];
+                    }
+                    else
+                    {
+
+                        number = phoneNumbers[indexOfNumber];
+                    }
+                    foreach (char symbol in number)
+                    {
+                        if ((int)symbol >= 48 && (int)symbol <= 57)
+                        {
+                            sumOfDigits += (int)symbol - 48;
+                        }
+                    }
+              return sumOfDigits;
+        }
+
+        ///
+
+        public static int ConvertNumToDif(string[] people, string[] phoneNumbers, string secondInputComand)
+        {
+
+            var indexOfPerson = Array.IndexOf(people, secondInputComand);
+            var indexOfNumber = Array.IndexOf(phoneNumbers, secondInputComand);
+            var difOfDigits = 0;
+            var counter = 0;
+            var number = "";
+
+            if (indexOfPerson != -1)
+            {
+
+                number = phoneNumbers[indexOfPerson];
+            }
+            else
+            {
+
+                number = phoneNumbers[indexOfNumber];
+            }
+            foreach (char symbol in number)
+            {
+                if ((int)symbol >= 48 && (int)symbol <= 57)
+                {
+                    var current = (int)symbol - 48;
+                    if (counter == 0)
+                    {
+                        difOfDigits = current;
+                    }
+                    else
+                    {
+                        difOfDigits -= current;
+                    }
+                    counter++;
+                }
+            }
+            return difOfDigits;
+        }
+
+
+    }
+}
