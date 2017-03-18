@@ -1,0 +1,80 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication13
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] plants = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+            int[] powerOfPlants = plants;
+            var copyOfPlants = new int[plants.Length];
+            var livePlants = plants.Length;
+            var daysSurvived = 1;
+            var seasonsSurvived = 0;
+            for (int i = 0; i < plants.Length; i++)
+            {
+                copyOfPlants[i] = plants[i];
+            }
+
+
+
+
+            while (livePlants != 0)
+            {
+                for (int i = 0; i < plants.Length; i++)
+                {
+                    if (plants[i] != 0)
+                    {
+                        powerOfPlants[i]++;
+                    }
+
+                    for (int j = 0; j < plants.Length; j++)
+                    {
+                        if (powerOfPlants[j] == 0)
+                        {
+                        }
+                        else
+                        {
+                            powerOfPlants[j]--;
+                            if (powerOfPlants[j] == 0)
+                            {
+                                livePlants--;
+                            }
+                        }
+
+                    }
+                    if (i == plants.Length - 1 && livePlants != 0)
+                    {
+                        plants = Bloom(plants);
+                        seasonsSurvived++;
+                    }
+                    if (livePlants == 0)
+                    {
+                        break;
+                    }
+                    daysSurvived++;
+
+                }
+            }
+
+            Console.WriteLine($"survived {daysSurvived} days ({seasonsSurvived} seasons)");
+           
+        }
+        public static int[] Bloom( int[] power) {
+
+            for (int i = 0; i < power.Length; i++)
+            {
+                if (power[i] != 0)
+                {
+                    power[i]++;
+                }
+            }
+            return power;
+        }
+    }
+}

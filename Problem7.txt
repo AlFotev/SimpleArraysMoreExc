@@ -1,0 +1,186 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication14
+{
+    class Program
+    {
+        //        You will be given a series of commands on the console.Create an empty, 4 element integer array.Until you receive the command "end", process the following commands:
+        //•	push {number
+        //    } – add the number to the end of the array.
+        //•	pop – remove the last number from the array
+        //•	removeAt {index
+        //} – remove the number at the given index and shift all elements to its right to the left to fill its room.
+        //o example: [1 2 3 4 5] -> removeAt 2 -> [1 2 4 5]
+        //•	clear – erase all the contents of the array
+        //If at any point, the array becomes too small to hold the elements(such as when adding too many elements), create a new array at twice the size of the original one and fill it up with the elements of the original array.Then continue executing the commands.After you receive the “end” command, print the array in its final state, separating the elements by a single space.If there are no elements left in the array, print “empty array”
+
+        static void Main(string[] args)
+        {
+            int[] array = new int[4];
+            int?[] copy = new int?[array.Length];
+            var pushCatcher = 0;
+            var command = "";
+            var inputNum = 0;
+            var isDoubled = 0;
+
+
+
+            //making workable copy of array
+            for (int i = 0; i < array.Length; i++)
+            {
+                copy[i] = null;
+
+            }
+            //decrypting the user input          
+            ////working with user commands
+            for (int i = 0; i < copy.Length; i++)
+            {
+                var userInput = Console.ReadLine().Split(' ');
+
+                if (userInput.Length > 1)
+                {
+                    command = userInput[0];
+                    inputNum = int.Parse(userInput[1]);
+                }
+                else
+                {
+                    command = userInput[0];
+                }
+                if (command == "push")
+                {
+                    copy = Push(copy, inputNum, isDoubled, pushCatcher);
+                    pushCatcher++;
+                    if (pushCatcher == copy.Length)
+                    {
+                        var doubleCopy = new int?[copy.Length * 2];
+                        for (int j = 0; j < copy.Length; j++)
+                        {
+                            doubleCopy[j] = copy[j];
+                        }
+                        isDoubled++;
+                        copy = doubleCopy;
+                    }
+                }
+                else if (command == "pop")
+                {
+                    copy = Pop(copy, isDoubled, pushCatcher);
+                    pushCatcher--;
+                }
+                else if (command == "removeAt")
+                {
+                    copy = RemoveAt(copy, inputNum);
+                }
+                else if (command == "clear")
+                {
+                    pushCatcher = 0;
+                    isDoubled = 0;
+                    copy = Clear(copy);
+                }
+                else if (command == "end")
+                {
+                    break;
+                }
+                i--;
+            }
+
+
+            if (isEmpty(copy))
+            {
+                Console.WriteLine("empty array");
+            }
+            else
+            {
+                Console.WriteLine(string.Join(" ", copy));
+            }
+
+
+        }
+        //add to end
+        public static int?[] Push(int?[] copy, int element, int isDoubled, int pushCatcher)
+        {
+            for (int i = copy.Length - 1; i > 0; i--)
+            {
+                if (copy[i - 1] != null && copy[i] == null)
+                {
+                    copy[i] = element;
+                    break;
+                }
+                else if (copy[i -1] == null && i == 1)
+                {
+                    copy[i - 1] = element;
+                }
+            }
+
+            return copy;
+        }
+        //remove last
+        public static int?[] Pop(int?[] copy, int isDoubled, int pushCatcher)
+        {
+            for (int i = copy.Length - 1; i > 0; i--)
+            {
+                if (copy[i] != null )
+                {
+                    copy[i] = null;
+                    break;
+                }
+            }
+
+            return copy;
+        }
+        //remove at
+        public static int?[] RemoveAt(int?[] copy, int index)
+        {
+            if (index == copy.Length - 1)
+            {
+                copy[index] = null;
+            }
+            else
+            {
+                for (int i = index; i < copy.Length - 1; i++)
+                {
+
+                    copy[i] = copy[i + 1];
+
+                }
+                copy[copy.Length - 1] = null;
+            }
+
+
+            return copy;
+        }
+        //clear all
+        public static int?[] Clear(int?[] copy)
+        {
+            copy = new int?[4];
+            return copy;
+        }
+        //check if array is empty
+        public static bool isEmpty(int?[] copy)
+        {
+            var emptyMark = 0;
+            for (int i = 0; i < copy.Length - 1; i++)
+            {
+
+                if (copy[i] == null || copy[i] == 0)
+                {
+                    emptyMark++;
+                }
+
+
+            }
+
+            if (emptyMark == copy.Length - 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+}

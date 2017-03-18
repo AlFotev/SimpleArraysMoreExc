@@ -1,0 +1,33 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication13
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var strArr = Console.ReadLine();
+            var intArr = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+            var result = "";
+
+            for (var i = 0; i < strArr.Length; i++)
+            {
+                var currentStr = strArr[i];
+                var currentInt = intArr[i];
+                if ((int)currentInt % 2 == 0)
+                {
+                    result += (char)((int)currentStr - currentInt);
+                }
+                else
+                {
+                    result += (char)((int)currentStr + currentInt);
+                }
+            }
+            Console.WriteLine(result);
+        }
+    }
+}
