@@ -1,0 +1,39 @@
+using System;
+using System.Linq;
+
+namespace ArraysMoreExercises
+{
+    public class FirstProblem
+    {
+        public static void Main()
+        {
+            string [] strArr = Console.ReadLine().Split(' ');
+            var result = "";
+            long occurance = 1;
+
+            for (long i = strArr.Length - 1; i > 0; i--)
+            {
+                var currentEl = strArr[i];
+                var nextEl = strArr[i - 1];
+                if (currentEl == nextEl)
+                {
+                    occurance++;
+                    result += currentEl + " ";
+                }
+                if ( occurance == 3)
+                {
+                    result += strArr[i];
+                    Console.WriteLine(result);
+                    break;
+                }
+                else if (currentEl != nextEl && occurance != 3)
+                {
+                    occurance = 1;
+                    result =  "";
+                }
+               
+            }
+
+        }
+    }
+}
