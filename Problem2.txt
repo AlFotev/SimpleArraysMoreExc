@@ -1,0 +1,24 @@
+using System;
+using System.Linq;
+
+namespace ArraysMoreExercises
+{
+    public class FirstProblem
+    {
+        public static void Main()
+        {
+            var intArr = Console.ReadLine() .Split(' ').Select(int.Parse).ToArray();
+            var result = "";
+
+            for (int i = 0; i < intArr.Length; i++)
+            {
+                if (i == intArr[i])
+                {
+                    result += " " + intArr[i];
+                }
+            }
+
+            Console.WriteLine(result);
+        }
+    }
+}
